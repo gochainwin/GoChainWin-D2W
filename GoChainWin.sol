@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
-// * gochainwin - fair games that pay GO. Version 5.
+// * GoChainWin - fair games that pay GO. Version 5.
 //
-// * Ethereum smart contract, deployed at <Undeployed!>.
+// * GoChain smart contract, deployed at <Undeployed!>.
 //
 // * Uses hybrid commit-reveal + block hash random number generation that is immune
 //   to tampering by players, house and miners. Apart from being fully transparent,
@@ -11,29 +11,29 @@ pragma solidity ^0.4.24;
 contract GoChainWin {
     /// *** Constants section
 
-    // Each bet is deducted 1% in favour of the house, but no less than some minimum.
+    // Each bet is deducted 2% in favour of the house, but no less than some minimum.
     // The lower bound is dictated by gas costs of the settleBet transaction, providing
     // headroom for up to 10 Gwei prices.
     uint constant HOUSE_EDGE_PERCENT = 2;
-    uint constant HOUSE_EDGE_MINIMUM_AMOUNT = 0.0003 ether;
+    uint constant HOUSE_EDGE_MINIMUM_AMOUNT = 0.0003 go;
 
     // Bets lower than this amount do not participate in jackpot rolls (and are
     // not deducted JACKPOT_FEE).
-    uint constant MIN_JACKPOT_BET = 0.1 ether;
+    uint constant MIN_JACKPOT_BET = 0.1 go;
 
     // Chance to win jackpot (currently 0.1%) and fee deducted into jackpot fund.
     uint constant JACKPOT_MODULO = 1000;
-    uint constant JACKPOT_FEE = 0.001 ether;
+    uint constant JACKPOT_FEE = 0.001 go;
 
     // There is minimum and maximum bets.
-    uint constant MIN_BET = 0.01 ether;
-    uint constant MAX_AMOUNT = 300000 ether;
+    uint constant MIN_BET = 0.01 go;
+    uint constant MAX_AMOUNT = 300000 go;
 
     // Modulo is a number of equiprobable outcomes in a game:
     //  - 2 for coin flip
     //  - 6 for dice
     //  - 6*6 = 36 for double dice
-    //  - 100 for etheroll
+    //  - 100 for gooll
     //  - 37 for roulette
     //  etc.
     // It's called so because 256-bit entropy is treated like a huge integer and
@@ -43,7 +43,7 @@ contract GoChainWin {
     // For modulos below this threshold rolls are checked against a bit mask,
     // thus allowing betting on any combination of outcomes. For example, given
     // modulo 6 for dice, 101000 mask (base-2, big endian) means betting on
-    // 4 and 6; for games with modulos higher than threshold (Etheroll), a simple
+    // 4 and 6; for games with modulos higher than threshold (gooll), a simple
     // limit is used, allowing betting on any outcome in [0, N) range.
     //
     // The specific value is dictated by the fact that 256-bit intermediate
@@ -59,7 +59,7 @@ contract GoChainWin {
     // past. Given that settleBet uses block hash of placeBet as one of
     // complementary entropy sources, we cannot process bets older than this
     // threshold. On rare occasions dice2.win croupier may fail to invoke
-    // settleBet in this timespan due to technical issues or extreme Ethereum
+    // settleBet in this timespan due to technical issues or extreme GoChain
     // congestion; such bets can be refunded via invoking refundBet.
     uint constant BET_EXPIRATION_BLOCKS = 250;
 
@@ -195,7 +195,7 @@ contract GoChainWin {
     //  amount == 0 && gambler != 0 - 'processed' (can clean storage)
     //
     //  NOTE: Storage cleaning is not implemented in this contract version; it will be added
-    //        with the next upgrade to prevent polluting Ethereum state with expired bets.
+    //        with the next upgrade to prevent polluting GoChain state with expired bets.
 
     // Bet placing transaction - issued by the player.
     //  betMask         - bet outcomes bit mask for modulo <= MAX_MASK_MODULO,
@@ -281,7 +281,7 @@ contract GoChainWin {
     // This is the method used to settle 99% of bets. To process a bet with a specific
     // "commit", settleBet should supply a "reveal" number that would Keccak256-hash to
     // "commit". "blockHash" is the block hash of placeBet block as seen by croupier; it
-    // is additionally asserted to prevent changing the bet outcomes on Ethereum reorgs.
+    // is additionally asserted to prevent changing the bet outcomes on GoChain reorgs.
     function settleBet(uint reveal, bytes32 blockHash) external onlyCroupier {
         uint commit = uint(keccak256(abi.encodePacked(reveal)));
 
@@ -299,7 +299,7 @@ contract GoChainWin {
 
     // This method is used to settle a bet that was mined into an uncle block. At this
     // point the player was shown some bet outcome, but the blockhash at placeBet height
-    // is different because of Ethereum chain reorg. We supply a full merkle proof of the
+    // is different because of GoChain chain reorg. We supply a full merkle proof of the
     // placeBet transaction receipt to provide untamperable evidence that uncle block hash
     // indeed was present on-chain at some point.
     function settleBetUncleMerkleProof(uint reveal, uint40 canonicalBlockNumber) external onlyCroupier {
@@ -457,7 +457,7 @@ contract GoChainWin {
     // *** Merkle proofs.
 
     // This helpers are used to verify cryptographic proofs of placeBet inclusion into
-    // uncle blocks. They are used to prevent bet outcome changing on Ethereum reorgs without
+    // uncle blocks. They are used to prevent bet outcome changing on GoChain reorgs without
     // compromising the security of the smart contract. Proof data is appended to the input data
     // in a simple prefix length format and does not adhere to the ABI.
     // Invariants checked:
@@ -465,7 +465,7 @@ contract GoChainWin {
     //    contract (3) containing commit as a payload.
     //  - receipt trie entry is a part of a valid merkle proof of a block header
     //  - the block header is a part of uncle list of some block on canonical chain
-    // The implementation is optimized for gas cost and relies on the specifics of Ethereum internal data structures.
+    // The implementation is optimized for gas cost and relies on the specifics of GoChain internal data structures.
     // Read the whitepaper for details.
 
     // Helper to verify a full merkle proof starting from some seedHash (usually commit). "offset" is the location of the proof
