@@ -1,22 +1,20 @@
 pragma solidity ^0.4.24;
 
-// * dice2.win - fair games that pay Ether. Version 5.
+// * gochainwin - fair games that pay GO. Version 5.
 //
-// * Ethereum smart contract, deployed at 0xD1CEeeeee83F8bCF3BEDad437202b6154E9F5405.
+// * Ethereum smart contract, deployed at <Undeployed!>.
 //
 // * Uses hybrid commit-reveal + block hash random number generation that is immune
 //   to tampering by players, house and miners. Apart from being fully transparent,
 //   this also allows arbitrarily high bets.
-//
-// * Refer to https://dice2.win/whitepaper.pdf for detailed description and proofs.
 
-contract Dice2Win {
+contract GoChainWin {
     /// *** Constants section
 
     // Each bet is deducted 1% in favour of the house, but no less than some minimum.
     // The lower bound is dictated by gas costs of the settleBet transaction, providing
     // headroom for up to 10 Gwei prices.
-    uint constant HOUSE_EDGE_PERCENT = 1;
+    uint constant HOUSE_EDGE_PERCENT = 2;
     uint constant HOUSE_EDGE_MINIMUM_AMOUNT = 0.0003 ether;
 
     // Bets lower than this amount do not participate in jackpot rolls (and are
