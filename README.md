@@ -1,6 +1,7 @@
 # GoChainWin-D2W
 GoChainWin SmartContract
 
+An attempt to port dice2.win to GoChain.
 
 ---
 
