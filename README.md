@@ -28,17 +28,10 @@ An attempt to port dice2.win to GoChain.
 ## Sample Bet.
 
 | # | Name            | Type    | Data  |
-| - | --------------- | ------- | -----:|
+| - | --------------- | ------- |:----- |
 | 0 | betMask         | uint256 | 1
 | 1 | modulo          | uint256 | 2
 | 2 | commitLastBlock | uint256 | 6552635
 | 3 | commit          | uint256 | 105924773861004735583835816423796625830841821263867874621173584848383761270567
 | 4 | r               | bytes32 | fe92e2efd9eba629eff34aef11e6fd5e77c15448e6778d20a47aa2da32f9a583
 | 5 | s               | bytes32 | 62eb096928992f511faecb354ba24249b0a746d80f0cabf80022b3ec2529291c
-#	Name	Type	Data
-0	betMask	uint256	1
-1	modulo	uint256	2
-2	commitLastBlock	uint256	6552635
-3	commit	uint256	105924773861004735583835816423796625830841821263867874621173584848383761270567
-4	r	bytes32	fe92e2efd9eba629eff34aef11e6fd5e77c15448e6778d20a47aa2da32f9a583
-5	s	bytes32	62eb096928992f511faecb354ba24249b0a746d80f0cabf80022b3ec2529291c
