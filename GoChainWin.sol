@@ -58,7 +58,7 @@ contract GoChainWin {
     // EVM BLOCKHASH opcode can query no further than 256 blocks into the
     // past. Given that settleBet uses block hash of placeBet as one of
     // complementary entropy sources, we cannot process bets older than this
-    // threshold. On rare occasions dice2.win croupier may fail to invoke
+    // threshold. On rare occasions GoChainWin.io croupier may fail to invoke
     // settleBet in this timespan due to technical issues or extreme GoChain
     // congestion; such bets can be refunded via invoking refundBet.
     uint constant BET_EXPIRATION_BLOCKS = 250;
@@ -173,7 +173,7 @@ contract GoChainWin {
         jackpotSize += uint128(increaseAmount);
     }
 
-    // Funds withdrawal to cover costs of dice2.win operation.
+    // Funds withdrawal to cover costs of GoChainWin.io operation.
     function withdrawFunds(address beneficiary, uint withdrawAmount) external onlyOwner {
         require (withdrawAmount <= address(this).balance, "Increase amount larger than balance.");
         require (jackpotSize + lockedInBets + withdrawAmount <= address(this).balance, "Not enough funds.");
@@ -203,7 +203,7 @@ contract GoChainWin {
     //  modulo          - game modulo.
     //  commitLastBlock - number of the maximum block where "commit" is still considered valid.
     //  commit          - Keccak256 hash of some secret "reveal" random number, to be supplied
-    //                    by the dice2.win croupier bot in the settleBet transaction. Supplying
+    //                    by the GoChainWin.io croupier bot in the settleBet transaction. Supplying
     //                    "commit" ensures that "reveal" cannot be changed behind the scenes
     //                    after placeBet have been mined.
     //  r, s            - components of ECDSA signature of (commitLastBlock, commit). v is
@@ -240,7 +240,7 @@ contract GoChainWin {
             // rollUnder is a number of 1 bits in this mask (population count).
             // This magic looking formula is an efficient way to compute population
             // count on EVM for numbers below 2**40. For detailed proof consult
-            // the dice2.win whitepaper.
+            // the GoChainWin.io whitepaper.
             rollUnder = ((betMask * POPCNT_MULT) & POPCNT_MASK) % POPCNT_MODULO;
             mask = betMask;
         } else {
@@ -397,7 +397,7 @@ contract GoChainWin {
     // Refund transaction - return the bet amount of a roll that was not processed in a
     // due timeframe. Processing such blocks is not possible due to EVM limitations (see
     // BET_EXPIRATION_BLOCKS comment above for details). In case you ever find yourself
-    // in a situation like this, just contact the dice2.win support, however nothing
+    // in a situation like this, just contact the GoChainWin.io support, however nothing
     // precludes you from invoking this method yourself.
     function refundBet(uint commit) external {
         // Check that bet is in 'active' state.
@@ -614,3 +614,5 @@ contract GoChainWin {
         }
     }
 }
+
+
