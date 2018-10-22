@@ -37,8 +37,9 @@ An attempt to port dice2.win to GoChain.
 | 5 | s               | bytes32 | 62eb096928992f511faecb354ba24249b0a746d80f0cabf80022b3ec2529291c
 
 ## Constants
-**HOUSE_EDGE_PERCENT 
-HOUSE_EDGE_MINIMUM_AMOUNT** 
+**HOUSE_EDGE_PERCENT** 
+**HOUSE_EDGE_MINIMUM_AMOUNT** 
+
 Each bet is deducted 2% in favour of the house, but no less than some minimum. The lower bound is dictated by gas costs of the settleBet transaction, providing headroom for up to 10 Gwei prices.
 
 **MIN_JACKPOT_BET** 
